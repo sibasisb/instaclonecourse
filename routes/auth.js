@@ -7,6 +7,8 @@ require('dotenv').config();
 const KEY=process.env.SECRET_KEY;
 const requireLogin=require('../middlewares/requireLogin.js');
 
+
+
 router.route('/').get((req,res)=>{
     res.json('Authentication page');
 });

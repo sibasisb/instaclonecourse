@@ -9,8 +9,9 @@ import {useParams} from 'react-router-dom';
 const UserProfile=()=>{
     const [profile,setProfile]=useState(null);
     const {userid}=useParams();
-    const [showFollow,setShowFollow]=useState(state?!state.following.includes(userid):true);
     const {state,dispatch}=useContext(UserContext);
+    const [showFollow,setShowFollow]=useState(state?!state.following.includes(userid):true);
+    
     useEffect(()=>{
         fetch("/profile/"+userid,{
             method:"GET",

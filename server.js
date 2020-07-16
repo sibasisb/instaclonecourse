@@ -10,8 +10,6 @@ const profileRouter=require('./routes/profiles.js');
 const PORT=process.env.PORT||5000;
 const URI=process.env.ATLAS;
 const cors=require('cors');
-
-
 mongoose.connect(URI,{
     useNewUrlParser:true,
     useCreateIndex:true,
