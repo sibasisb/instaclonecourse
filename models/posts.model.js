@@ -14,7 +14,7 @@ const postSchema=new mongoose.Schema({
         type:ObjectId,
         ref:'users'        
     }
-});
+},{timestamps:true});
 
 const Posts=mongoose.model('Posts',postSchema);
 module.exports=Posts;

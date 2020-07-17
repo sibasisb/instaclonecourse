@@ -26,14 +26,14 @@ const UserProfile=()=>{
         .catch(err=>console.log(err));
     },[]);
 
-    const followUser=(id)=>{
+    const followUser=()=>{
         fetch('/profile/follow',{
             method:'PUT',
             headers:{
                 "Content-Type":"application/json",
                 "authorization":"Bearer "+localStorage.getItem("jwt")
             },
-            body:JSON.stringify({followedId:id})
+            body:JSON.stringify({followedId:userid})
         })
         .then(res=>res.json())
         .then(results=>{
@@ -56,14 +56,14 @@ const UserProfile=()=>{
         .catch(err=>console.log(err));
     }
     
-    const unfollowUser=(id)=>{
+    const unfollowUser=()=>{
         fetch('/profile/unfollow',{
             method:'PUT',
             headers:{
                 "Content-Type":"application/json",
                 "authorization":"Bearer "+localStorage.getItem("jwt")
             },
-            body:JSON.stringify({unfollowedId:id})
+            body:JSON.stringify({unfollowedId:userid})
         })
         .then(res=>res.json())
         .then(results=>{
@@ -109,8 +109,8 @@ const UserProfile=()=>{
                         <h6> {profile.user.following.length} Following </h6>
                     </div>
                     {showFollow?
-                        <button style={{margin:"10px"}} onClick={()=>followUser(userid)} className="btn waves-effect waves-light #42a5f5 blue darken-1">Follow</button>:
-                        <button style={{margin:"10px"}} onClick={()=>unfollowUser(userid)} className="btn waves-effect waves-light #42a5f5 blue darken-1">Unfollow</button>
+                        <button style={{margin:"10px"}} onClick={()=>followUser()} className="btn waves-effect waves-light #42a5f5 blue darken-1">Follow</button>:
+                        <button style={{margin:"10px"}} onClick={()=>unfollowUser()} className="btn waves-effect waves-light #42a5f5 blue darken-1">Unfollow</button>
                     }
                 </div>
             </div>

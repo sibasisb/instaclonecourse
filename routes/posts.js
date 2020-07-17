@@ -22,6 +22,7 @@ router.get('/posts',requireLogin,(req,res)=>{
     Posts.find()
     .populate('comments.commentedBy','_id name')
     .populate('postedBy','_id name')
+    .sort('-createdAt')
     .then(posts=>{
         res.json({posts})
     })
@@ -32,6 +33,7 @@ router.get('/subposts',requireLogin,(req,res)=>{
     Posts.find({postedBy:{$in:req.user.following}})
     .populate('comments.commentedBy','_id name')
     .populate('postedBy','_id name')
+    .sort('-createdAt')
     .then(posts=>{
         res.json({posts})
     })
@@ -42,6 +44,7 @@ router.get('/myposts',requireLogin,(req,res)=>{
     Posts.find({postedBy:req.user._id})
     .populate('comments.commentedBy','_id name')
     .populate('postedBy','_id name')
+    .sort('-createdAt')
     .then(posts=>{
         res.json({posts})
     })
@@ -66,7 +69,8 @@ router.put('/unlike',requireLogin,(req,res)=>{
     Posts.findByIdAndUpdate(postId)
     .populate('postedBy','_id name')
     .then(post=>{
-        post.likes.pop(req.user._id);
+        let idx=post.likes.indexOf(req.user._id);
+        post.likes.splice(idx,1);
         post.save()
         .then(result=>res.json({result}))
         .catch(error=>res.json({error}));

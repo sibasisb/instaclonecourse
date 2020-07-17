@@ -24,24 +24,24 @@ router.put('/follow',requireLogin,(req,res)=>{
     User.findByIdAndUpdate(followedId)
     .populate('follower','_id')
     .populate('following','_id')
-    .then(user1=>{
-        user1.follower.push(req.user._id);
-        user1.save()
-        .then((user1)=>{
+    .then(u1=>{
+        u1.follower.push(req.user._id);
+        u1.save()
+        .then(()=>{
             User.findByIdAndUpdate(req.user._id)
             .populate('follower','_id name')
             .populate('following','_id name')
             .then(user2=>{
                 user2.following.push(followedId);
                 user2.save()
-                .then((user2)=>{
-                    return res.json({followed:user1,follower:user2});
+                .then((u2)=>{
+                    return res.json({follower:u2});
                 })
                 .catch(err=>res.json({error:err}))
             })
-        .catch(error=>res.json({error}));
-    })
-    .catch(erro=>res.json({error:erro}));
+            .catch(error=>res.json({error}));
+        })
+        .catch(erro=>res.json({error:erro}));
     })
     .catch(e=>res.json({error:e}));
 
@@ -56,23 +56,25 @@ router.put('/unfollow',requireLogin,(req,res)=>{
     .populate('follower','_id')
     .populate('following','_id')
     .then(user1=>{
-        user1.follower.pop(req.user._id);
+        let idx=req.user._id;
+        user1.follower.splice(idx,1);
         user1.save()
-        .then((user1)=>{
+        .then(()=>{
             User.findByIdAndUpdate(req.user._id)
             .populate('follower','_id name')
             .populate('following','_id name')
-            .then(user2=>{
-                user2.following.pop(unfollowedId);
-                user2.save()
+            .then(u2=>{
+                let i=unfollowedId;
+                u2.following.splice(i,1);        
+                u2.save()
                 .then((user2)=>{
-                    return res.json({unfollowed:user1,unfollower:user2});
+                    return res.json({unfollower:user2});
                 })
                 .catch(err=>res.json({error:err}))
             })
-        .catch(error=>res.json({error}));
-    })
-    .catch(erro=>res.json({error:erro}));
+            .catch(error=>res.json({error}));
+        })
+        .catch(erro=>res.json({error:erro}));
     })
     .catch(e=>res.json({error:e}));
 
